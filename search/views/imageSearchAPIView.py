@@ -57,7 +57,7 @@ class ImageSearchView(APIView):
       print("Market 있음")
     except Market.DoesNotExist:
       ## Market 데이터 저장
-      market_data = {'name': shop['title'], 'latitude':shop['mapx'], 'longitude': shop['mapy'], 'road_address': shop['roadAddress']}
+      market_data = {'market_name': shop['title'], 'latitude':shop['mapx'], 'longitude': shop['mapy'], 'road_address': shop['roadAddress']}
       serializer = MarketCreateSerializer(data=market_data)
       if serializer.is_valid():
         serializer.save()

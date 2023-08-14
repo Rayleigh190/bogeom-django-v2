@@ -7,7 +7,7 @@ class MarketCreateSerializer(serializers.ModelSerializer):
   class Meta:
     model =  Market
     fields = [
-      'name',
+      'market_name',
       'latitude',
       'longitude',
       'road_address',

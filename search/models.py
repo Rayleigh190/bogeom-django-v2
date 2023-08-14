@@ -24,23 +24,15 @@ class Market(models.Model):
   id = models.AutoField(
     primary_key=True
   )
-  # items_list = models.OneToOneField(
-  #   MarketItems,
-  #   on_delete = models.SET_NULL,
-  #   null = True
-  # )
-  name = models.CharField(
+  market_name = models.CharField(
     max_length = 128
   )
   latitude = models.FloatField()
   longitude = models.FloatField()
   road_address = models.TextField()
-  updated_at = models.DateTimeField(
-    auto_now_add = True
-  )
 
   def __str__(self):
-    return self.name
+    return self.market_name
 
 
 class MarketItems(models.Model):
@@ -57,4 +49,7 @@ class MarketItems(models.Model):
   )
   item_price = models.PositiveIntegerField(
     default = 0
+  )
+  updated_at = models.DateTimeField(# 옮기기
+    auto_now = True
   )
