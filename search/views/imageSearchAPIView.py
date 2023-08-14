@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from PIL import Image
 import json
-from . import myGoogle, myOpenai, myFunctions, myGPS
+from .myViews import myGoogle, myOpenai, myFunctions, myGPS
 import urllib.parse
 from pprint import pprint as pp
 from search.models import Market, MarketItems, Item
