@@ -3,6 +3,7 @@
 
 myvenv
 static
+google_service_secret_key.json
 
 ### Django ###
 *.log
