@@ -19,7 +19,7 @@ def get_secret(setting, secrets=secrets):
         raise ImproperlyConfigured(error_msg)
 
 
-OPENAI_KEY = os.environ.get("OPENAI_KEY")
+OPENAI_KEY = get_secret("OPENAI_KEY")
 
 
 def chatGPT(ocr_result): # cahtGPT API
