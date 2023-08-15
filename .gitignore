@@ -5,6 +5,7 @@ myvenv
 static
 google_service_secret_key.json
 chromedriver
+secrets.json
 
 ### Django ###
 *.log

@@ -9,9 +9,26 @@ from bs4 import BeautifulSoup as bs
 from selenium import webdriver
 
 
-NAVER_CLIENT_ID = os.environ.get("ND_CLIENT_ID")
-NAVER_CLIENT_SECRET = os.environ.get("ND_CLIENT_SECRET")
-OPENAI_KEY = os.environ.get("OPENAI_KEY")
+from pathlib import Path
+from django.core.exceptions import ImproperlyConfigured
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+secret_file = os.path.join(BASE_DIR, 'secrets.json') # secrets.json 파일 위치를 명시
+
+with open(secret_file) as f:
+    secrets = json.loads(f.read())
+
+def get_secret(setting, secrets=secrets):
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = "Set the {} environment variable".format(setting)
+        raise ImproperlyConfigured(error_msg)
+
+
+NAVER_CLIENT_ID = get_secret("ND_CLIENT_ID")
+NAVER_CLIENT_SECRET = get_secret("ND_CLIENT_SECRET")
+OPENAI_KEY = get_secret("OPENAI_KEY")
 
 
 def summaryChatGPT(text): # 본문 요약

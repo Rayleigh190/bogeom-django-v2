@@ -8,21 +8,36 @@ import ssl
 import json
 import os
 import requests
+from pathlib import Path
+from django.core.exceptions import ImproperlyConfigured
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+secret_file = os.path.join(BASE_DIR, 'secrets.json') # secrets.json 파일 위치를 명시
+
+with open(secret_file) as f:
+    secrets = json.loads(f.read())
+
+def get_secret(setting, secrets=secrets):
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = "Set the {} environment variable".format(setting)
+        raise ImproperlyConfigured(error_msg)
 
 
 class NaverMap():
     
   # API KEY
-  # api_key = os.environ.get("NCP_GATEWAY_KEY")
+  # api_key = get_secret("NCP_GATEWAY_KEY")
 
   # 인증 KEY
 
   # NCP 콘솔에서 복사한 클라이언트ID와 클라이언트Secret 값
-  ncp_client_id = os.environ.get("NCP_CLIENT_ID")
-  ncp_client_secret = os.environ.get("NCP_CLIENT_SECRET")
+  ncp_client_id = get_secret("NCP_CLIENT_ID")
+  ncp_client_secret = get_secret("NCP_CLIENT_SECRET")
   
-  nd_client_id = os.environ.get("ND_CLIENT_ID")
-  nd_client_secret = os.environ.get("ND_CLIENT_SECRET")
+  nd_client_id = get_secret("ND_CLIENT_ID")
+  nd_client_secret = get_secret("ND_CLIENT_SECRET")
   
 
   def gc(self, coords):
