@@ -3,7 +3,7 @@ Description=uWSGI service
 After=syslog.target
 
 [Service]
-ExecStart=/home/ubuntu/myvenv/bin/uwsgi -i /srv/bogeom-django-ver2/.config/uwsgi/bogeom.ini
+ExecStart=/home/ubuntu/myvenv/bin/uwsgi -i /srv/bogeom-django-v2/.config/uwsgi/bogeom.ini
 
 Restart=always
 KillSignal=SIGQUIT
