@@ -24,6 +24,17 @@ class ItemCreateSerializer(serializers.ModelSerializer):
     ]
 
 
+class MapItemSerializer(serializers.ModelSerializer):
+
+  class Meta:
+    model = Item
+    fields = [
+      'id',
+      'item_name',
+      'item_img',
+    ]
+
+
 class MarketItemsCreateSerializer(serializers.ModelSerializer):
 
   class Meta:

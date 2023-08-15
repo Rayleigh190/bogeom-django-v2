@@ -2,6 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 import urllib.parse
+from search.models import Item
+from search.serializers.serializers import MapItemSerializer
 
 class TextSearchView(APIView):
     
@@ -32,6 +34,25 @@ class TextSearchView(APIView):
             'list': naver_list_link
           },
         }
+      },
+      'error': None
+    }
+
+    return Response(final_result_dic)
+  
+
+class MapTextSearchView(APIView):
+    
+  def get(self, request):
+    item_name = request.GET['search']
+    
+    items = Item.objects.filter(item_name__contains=item_name)
+    serializer = MapItemSerializer(items, many=True)
+
+    final_result_dic = {
+      'success': True, 
+      'response': {
+        'items': serializer.data
       },
       'error': None
     }
