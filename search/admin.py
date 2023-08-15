@@ -11,8 +11,8 @@ class MarketItemsModelAdmin(admin.ModelAdmin):
 
 
 class ItemModelAdmin(admin.ModelAdmin):
-  list_display = ['item_name', 'item_search_count']
-  list_display_links = ['item_name', 'item_search_count']
+  list_display = ['id', 'item_name', 'item_search_count']
+  list_display_links = ['id', 'item_name', 'item_search_count']
 
 
 class MarketModelAdmin(admin.ModelAdmin):
