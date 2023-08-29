@@ -26,6 +26,7 @@ def haversine_distance(lat1, lon1, lat2, lon2):
   c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
   distance = R * c  # 두 지점 사이의 거리 (단위: km)
+  print(distance)
   return distance
 
 # katec 좌표를 wgs84 좌표로 변환
@@ -35,6 +36,13 @@ def katec_to_wgs84(x, y):
 
   transformer = pyproj.Transformer.from_crs(KATEC, WGS84, always_xy=True)
   lon, lat = transformer.transform(x, y)
+
+  return lat, lon
+
+# 소수점 없이 문자열로 된 wgs84 좌표를 실수로 변환하기
+def convert_to_real_number(x, y):
+  lat = float(x[:2]+'.'+x[2:])
+  lon = float(y[:3]+'.'+y[3:])
 
   return lat, lon
 
@@ -85,16 +93,17 @@ def get_shop_info(client_lat, client_lon):
       shop_list.append(conven)
 
   shortest_shop = {'shop':'', 'dis': sys.maxsize}
-
+  
   # 사용자 위치에서 가장 가까운 마트 또는 편의점을 찾아냄
   for shop in shop_list:
-    shop_lat, shop_lon = katec_to_wgs84(shop['mapx'], shop['mapy'])
+    shop_lat, shop_lon = convert_to_real_number(shop['mapy'], shop['mapx'])
     dis = haversine_distance(client_lat, client_lon, shop_lat, shop_lon)
+    print(dis)
     if shortest_shop['dis'] > dis:
       shortest_shop['shop'] = shop
       shortest_shop['dis'] = dis
 
-  shortest_shop['shop']['mapx'], shortest_shop['shop']['mapy'] = katec_to_wgs84(int(shortest_shop['shop']['mapx']), int(shortest_shop['shop']['mapy']))
+  shortest_shop['shop']['mapx'], shortest_shop['shop']['mapy'] = int(shortest_shop['shop']['mapx']), int(shortest_shop['shop']['mapy'])
   shortest_shop['shop']['title'] = cleanhtml(shortest_shop['shop']['title'])
 
   # pp(shortest_shop)
