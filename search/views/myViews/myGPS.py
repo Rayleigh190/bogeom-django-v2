@@ -26,7 +26,7 @@ def haversine_distance(lat1, lon1, lat2, lon2):
   c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
   distance = R * c  # 두 지점 사이의 거리 (단위: km)
-  print(distance)
+  # print(distance)
   return distance
 
 # katec 좌표를 wgs84 좌표로 변환
@@ -71,7 +71,11 @@ def get_shop_info(client_lat, client_lon):
     addr = f"{area1_name} {area2_name} {area3_name}{area4_name} {land_name} {land_number1}"
   except Exception as e:
     print("도로명 주소 얻기 실패", e)
-    return 'fail'
+    area1_name = gc_res['results'][1]['region']['area1']['name']
+    area2_name = gc_res['results'][1]['region']['area2']['name']
+    area3_name = gc_res['results'][1]['region']['area3']['name']
+    area4_name = gc_res['results'][1]['region']['area4']['name']
+    addr = f"{area1_name} {area2_name} {area3_name}{area4_name}"
 
   print("사용자 주소: "+addr+'\n')
 
@@ -93,12 +97,12 @@ def get_shop_info(client_lat, client_lon):
       shop_list.append(conven)
 
   shortest_shop = {'shop':'', 'dis': sys.maxsize}
-  
+  # print(shop_list)
   # 사용자 위치에서 가장 가까운 마트 또는 편의점을 찾아냄
   for shop in shop_list:
     shop_lat, shop_lon = convert_to_real_number(shop['mapy'], shop['mapx'])
     dis = haversine_distance(client_lat, client_lon, shop_lat, shop_lon)
-    print(dis)
+    # print(dis)
     if shortest_shop['dis'] > dis:
       shortest_shop['shop'] = shop
       shortest_shop['dis'] = dis

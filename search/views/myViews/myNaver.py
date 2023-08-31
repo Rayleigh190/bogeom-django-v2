@@ -10,6 +10,7 @@ import os
 import requests
 from pathlib import Path
 from django.core.exceptions import ImproperlyConfigured
+from pprint import pprint as pp
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 secret_file = os.path.join(BASE_DIR, 'secrets.json') # secrets.json 파일 위치를 명시
@@ -56,7 +57,7 @@ class NaverMap():
 
     # 요청
     res = requests.get(url, headers=headers)
-    # print(res.json())
+    # pp(res.json())
     return res.json()
 
 
