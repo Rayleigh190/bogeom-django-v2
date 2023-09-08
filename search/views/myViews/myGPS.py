@@ -107,7 +107,8 @@ def get_shop_info(client_lat, client_lon):
       shortest_shop['shop'] = shop
       shortest_shop['dis'] = dis
 
-  shortest_shop['shop']['mapx'], shortest_shop['shop']['mapy'] = int(shortest_shop['shop']['mapx']), int(shortest_shop['shop']['mapy'])
+  shortest_shop_lat, shortest_shop_lon = convert_to_real_number(shortest_shop['shop']['mapy'], shortest_shop['shop']['mapx'])
+  shortest_shop['shop']['mapx'], shortest_shop['shop']['mapy'] = shortest_shop_lat, shortest_shop_lon
   shortest_shop['shop']['title'] = cleanhtml(shortest_shop['shop']['title'])
 
   # pp(shortest_shop)

@@ -40,12 +40,13 @@ class SearchMarketView(APIView):
     # area3_name = gc_res['results'][0]['region']['area3']['name']
     # area4_name = gc_res['results'][0]['region']['area4']['name']
     addr = f"{area1_name} {area2_name.split(' ')[0]} "
-
+    print(addr)
     markets = Market.objects.filter(road_address__contains=addr)
-
+    print(markets)
     near_market_list = []
     for market in markets:
       dis = myGPS.haversine_distance(float(map_lat), float(map_lon), market.latitude, market.longitude)
+      print(dis)
       if dis <= 0.7: # 거리가 700m 이내이면
         near_market_list.append(market)
     
