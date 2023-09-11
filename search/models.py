@@ -10,7 +10,8 @@ class Item(models.Model):
     max_length=100
   )
   item_img  = models.ImageField(
-    null=True
+    null=True,
+    blank=True
   )
   item_search_count = models.PositiveIntegerField(
     default = 0
