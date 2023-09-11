@@ -30,7 +30,7 @@ def chatGPT(ocr_result): # cahtGPT API
       messages=[
         {
           "role": "user",
-          "content": str(ocr_result) + "Extract one product name from this list. Also tell me the index of that element. Respond in the following JSON format. {\"index\": number,\"product_name\":\"product name\"} . If extraction fails, respond with: {\"product_name\":\"fail\"}"
+          "content": str(ocr_result) + "Extract one product name and product price from this text. Respond in the following JSON format. {\"product_name\":\"product name\"} . If extraction fails, respond with: {\"product_name\":\"fail\"}"
         }
       ],
     )
@@ -39,3 +39,6 @@ def chatGPT(ocr_result): # cahtGPT API
 
   decoded = completion.choices[0].message["content"]
   return decoded
+
+
+# "Extract one product name from this list. Also tell me the index of that element. Respond in the following JSON format. {\"index\": number,\"product_name\":\"product name\"} . If extraction fails, respond with: {\"product_name\":\"fail\"}"

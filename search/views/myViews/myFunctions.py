@@ -12,7 +12,7 @@ def image_to_byte_array(image: Image) -> bytes: # Pillow 이미지를 bytes로 �
   return imgByteArr
 
 
-def get_pd_price(split_result_list, name_idx): # 가격 추출
+def get_pd_price(split_result_list, name_idx=0): # 가격 추출
   for block in split_result_list[name_idx:]:
     # if any(temp.isdigit() for temp in block): # 1000원 이하 가격 추출
     if (',' in block or '.' in block) and (2 < len(block) < 16):  # 1000원 이상 가격 추출

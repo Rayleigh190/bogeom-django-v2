@@ -42,7 +42,8 @@ class ImageSearchView(APIView):
       final_result_dic = {'success':False, 'error': '상품명 추출 실패'}
       return Response(final_result_dic)
     
-    item_price = myFunctions.get_pd_price(split_result_list, dic_result['index']) # 가격 추출
+    # item_price = myFunctions.get_pd_price(split_result_list, dic_result['index']) # 가격 추출
+    item_price = myFunctions.get_pd_price(split_result_list) # 가격 추출
     if item_price == 'fail':
       item_price = 0
 
