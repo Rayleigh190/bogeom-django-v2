@@ -96,6 +96,28 @@ def get_shop_info(client_lat, client_lon):
     if conven['category']=='생활,편의>편의점':
       shop_list.append(conven)
 
+  if len(shop_list) == 0:
+    shortest_shop = {'dis': 0.0,
+    'shop': {'address': '경북 울릉군 울릉읍 독도이사부길 55',
+            'category': '생활,편의>편의점',
+            'description': '',
+            'link': 'https://dokdo.mofa.go.kr/kor/',
+            'mapx': 37.2397239,
+            'mapy': 131.86968,
+            'roadAddress': '경북 울릉군 울릉읍 독도이사부길 55',
+            'telephone': '',
+            'title': '독도 경비대'}}
+    {'address': '경북 울릉군 울릉읍 독도이사부길 55',
+    'category': '생활,편의>편의점',
+    'description': '',
+    'link': 'https://dokdo.mofa.go.kr/kor/',
+    'mapx': 37.2397239,
+    'mapy': 131.86968,
+    'roadAddress': '경북 울릉군 울릉읍 독도이사부길 55',
+    'telephone': '',
+    'title': '독도 경비대'}
+    return shortest_shop
+
   shortest_shop = {'shop':'', 'dis': sys.maxsize}
   # print(shop_list)
   # 사용자 위치에서 가장 가까운 마트 또는 편의점을 찾아냄
@@ -111,5 +133,5 @@ def get_shop_info(client_lat, client_lon):
   shortest_shop['shop']['mapx'], shortest_shop['shop']['mapy'] = shortest_shop_lat, shortest_shop_lon
   shortest_shop['shop']['title'] = cleanhtml(shortest_shop['shop']['title'])
 
-  # pp(shortest_shop)
+  pp(shortest_shop)
   return shortest_shop
