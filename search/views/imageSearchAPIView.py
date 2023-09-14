@@ -116,7 +116,7 @@ class ImageSearchView(APIView):
         
 
     # naver_list_link = "https://msearch.shopping.naver.com/search/all?frm=NVSHMDL&origQuery="+encoded_item_name+"&pagingIndex=1&pagingSize=40&productSet=model&query="+encoded_item_name+"&sort=rel&viewType=lst"
-    naver_list_link = "https://search.shopping.naver.com/search/all?query="+encoded_item_name+"&cat_id=&frm=NVSHATC"
+    naver_list_link = "https://msearch.shopping.naver.com/search/all?query="+encoded_item_name+"&cat_id=&frm=NVSHATC"
 
     enuri_list_link = "https://m.enuri.com/m/search.jsp?keyword="+encoded_item_name
 
