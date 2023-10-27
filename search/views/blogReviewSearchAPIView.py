@@ -85,9 +85,14 @@ class BlogReviewView(APIView):
 class BlogSummaryView(APIView):
   def post(self, request):
     # request.data.get('link')
-    link = request.data.get('link')
+    try:
+      link = request.data.get('link')
+      print(link)
+      cached_data = cache.get(link)
+      print(cached_data)
+    except Exception as e:
+      print("캐시 에러.", e)
 
-    cached_data = cache.get(link)
     final_result_dic = {}
 
     if not cached_data:
