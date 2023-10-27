@@ -7,6 +7,7 @@ import os
 import json
 from bs4 import BeautifulSoup as bs
 from selenium import webdriver
+from django.core.cache import cache
 
 
 from pathlib import Path
@@ -86,37 +87,45 @@ class BlogSummaryView(APIView):
     # request.data.get('link')
     link = request.data.get('link')
 
-    options = webdriver.ChromeOptions()
-    options.add_argument("headless")
-    options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36")
-    # linux 환경에서 필요한 option
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    driver = webdriver.Chrome(options=options)
-    driver.get(link)
-    try:
-      driver.switch_to.frame("mainFrame")
-      html = driver.page_source
-      soup = bs(html, "html.parser")
-      elements = soup.select('div > div.se-main-container')
-    except Exception as e:
-      print("블로그 파싱 에러.", e)
-      error_message = "블로그 파싱 에러 발생: " + str(e)
-      final_result_dic = {'success':False, 'error': error_message}
-      return Response(final_result_dic, status=200)
+    cached_data = cache.get(link)
+    final_result_dic = {}
 
-    blog_main_text = ""
-    #반복문을 사용해서 각 태그의 텍스트값만 출력
-    for tag in elements:
-      blog_main_text += tag.get_text()
-    blog_main_text = blog_main_text.replace("\n", " ")
-    summarized_text = summaryChatGPT(blog_main_text)
+    if not cached_data:
+      options = webdriver.ChromeOptions()
+      options.add_argument("headless")
+      options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36")
+      # linux 환경에서 필요한 option
+      options.add_argument('--no-sandbox')
+      options.add_argument('--disable-dev-shm-usage')
+      driver = webdriver.Chrome(options=options)
+      driver.get(link)
+      try:
+        driver.switch_to.frame("mainFrame")
+        html = driver.page_source
+        soup = bs(html, "html.parser")
+        elements = soup.select('div > div.se-main-container')
+      except Exception as e:
+        print("블로그 파싱 에러.", e)
+        error_message = "블로그 파싱 에러 발생: " + str(e)
+        final_result_dic = {'success':False, 'error': error_message}
+        return Response(final_result_dic, status=200)
 
-    if summarized_text == "fail":
-      final_result_dic = {'success':False, 'error': "블로그 요약을 실패했습니다."}
+      blog_main_text = ""
+      #반복문을 사용해서 각 태그의 텍스트값만 출력
+      for tag in elements:
+        blog_main_text += tag.get_text()
+      blog_main_text = blog_main_text.replace("\n", " ")
+      summarized_text = summaryChatGPT(blog_main_text)
+
+      if summarized_text == "fail":
+        final_result_dic = {'success':False, 'error': "블로그 요약을 실패했습니다."}
+        driver.quit()
+        return Response(final_result_dic)
+
+      final_result_dic = {'success':True, 'result': summarized_text, 'error': None}
       driver.quit()
-      return Response(final_result_dic)
+      cache.set(link, summarized_text)
+    else:
+      final_result_dic = {'success':True, 'result': cached_data, 'error': None}
 
-    final_result_dic = {'success':True, 'result': summarized_text, 'error': None}
-    driver.quit()
     return Response(final_result_dic)
